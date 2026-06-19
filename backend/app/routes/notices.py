@@ -31,6 +31,22 @@ async def get_all_notices(admin: dict = Depends(get_current_admin)):
     return result.data
 
 
+@router.get("/quiz", response_model=NoticeResponse)
+async def get_active_quiz_notice():
+    result = (
+        supabase.table("notices")
+        .select("*")
+        .eq("is_active", True)
+        .eq("is_quiz", True)
+        .order("created_at", desc=True)
+        .limit(1)
+        .execute()
+    )
+    if not result.data:
+        raise HTTPException(status_code=404, detail="No active quiz announcement")
+    return result.data[0]
+
+
 @router.get("/{notice_id}", response_model=NoticeResponse)
 async def get_notice(notice_id: str):
     result = (
@@ -46,9 +62,12 @@ async def get_notice(notice_id: str):
 
 @router.post("/", response_model=NoticeResponse, status_code=201)
 async def create_notice(data: NoticeCreate, admin: dict = Depends(get_current_admin)):
+    payload = data.model_dump()
+    if payload.get("url"):
+        payload["url"] = str(payload["url"])
     result = (
         supabase.table("notices")
-        .insert(data.model_dump())
+        .insert(payload)
         .execute()
     )
     return result.data[0]
@@ -61,6 +80,8 @@ async def update_notice(
     update_data = data.model_dump(exclude_unset=True)
     if not update_data:
         raise HTTPException(status_code=400, detail="No fields to update")
+    if update_data.get("url"):
+        update_data["url"] = str(update_data["url"])
     result = (
         supabase.table("notices")
         .update(update_data)

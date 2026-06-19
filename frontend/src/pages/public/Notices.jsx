@@ -56,6 +56,16 @@ export default function Notices() {
               <p className="text-gray-600 mt-2 whitespace-pre-line">
                 {n.content}
               </p>
+              {n.url && (
+                <a
+                  href={n.url}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="mt-4 inline-block text-blue-700 font-medium hover:text-blue-900"
+                >
+                  Read more
+                </a>
+              )}
             </div>
           ))}
         </div>

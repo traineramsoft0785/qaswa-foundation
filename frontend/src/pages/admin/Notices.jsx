@@ -5,7 +5,7 @@ import FormModal from "../../components/admin/FormModal";
 import DeleteConfirmDialog from "../../components/admin/DeleteConfirmDialog";
 import StatusBadge from "../../components/admin/StatusBadge";
 
-const emptyForm = { title: "", content: "", is_pinned: false, is_active: true };
+const emptyForm = { title: "", content: "", url: "", is_pinned: false, is_active: true, is_quiz: false };
 
 export default function AdminNotices() {
   const [notices, setNotices] = useState([]);
@@ -34,8 +34,10 @@ export default function AdminNotices() {
     setForm({
       title: n.title,
       content: n.content,
+      url: n.url || "",
       is_pinned: n.is_pinned,
       is_active: n.is_active,
+      is_quiz: n.is_quiz,
     });
     setEditing(n.id);
   };
@@ -43,12 +45,16 @@ export default function AdminNotices() {
   const handleSave = async (e) => {
     e.preventDefault();
     setSaving(true);
+    const payload = { ...form };
+    if (!payload.url) {
+      delete payload.url;
+    }
     try {
       if (editing === "new") {
-        await createNotice(form);
+        await createNotice(payload);
         toast.success("Notice created");
       } else {
-        await updateNotice(editing, form);
+        await updateNotice(editing, payload);
         toast.success("Notice updated");
       }
       setEditing(null);
@@ -162,7 +168,17 @@ export default function AdminNotices() {
                 className="w-full border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
             </div>
-            <div className="flex gap-6">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Link URL</label>
+              <input
+                type="url"
+                value={form.url}
+                onChange={(e) => setForm({ ...form, url: e.target.value })}
+                placeholder="https://example.com"
+                className="w-full border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+            </div>
+            <div className="flex flex-col gap-3 md:flex-row md:items-center md:gap-6">
               <label className="flex items-center gap-2">
                 <input
                   type="checkbox"
@@ -180,6 +196,15 @@ export default function AdminNotices() {
                   className="w-4 h-4"
                 />
                 <span className="text-sm font-medium text-gray-700">Active</span>
+              </label>
+              <label className="flex items-center gap-2">
+                <input
+                  type="checkbox"
+                  checked={form.is_quiz}
+                  onChange={(e) => setForm({ ...form, is_quiz: e.target.checked })}
+                  className="w-4 h-4"
+                />
+                <span className="text-sm font-medium text-gray-700">Quiz Announcement</span>
               </label>
             </div>
             <div className="flex gap-3 justify-end pt-2">

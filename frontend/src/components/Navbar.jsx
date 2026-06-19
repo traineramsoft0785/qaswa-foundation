@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { HiMenu, HiX } from "react-icons/hi";
+import { getActiveQuizAnnouncement } from "../api/notices";
 
 const links = [
   { to: "/", label: "Home" },
@@ -13,7 +14,14 @@ const links = [
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
+  const [quizAvailable, setQuizAvailable] = useState(false);
   const location = useLocation();
+
+  useEffect(() => {
+    getActiveQuizAnnouncement()
+      .then(() => setQuizAvailable(true))
+      .catch(() => setQuizAvailable(false));
+  }, []);
 
   return (
     <nav className="bg-white shadow-md">
@@ -43,6 +51,18 @@ export default function Navbar() {
                 {link.label}
               </Link>
             ))}
+            {quizAvailable && (
+              <Link
+                to="/quiz"
+                className={`transition-colors ${
+                  location.pathname === "/quiz"
+                    ? "text-blue-700 font-semibold"
+                    : "text-gray-600 hover:text-blue-600"
+                }`}
+              >
+                Quiz
+              </Link>
+            )}
           </div>
 
           {/* Mobile menu button */}
@@ -73,6 +93,19 @@ export default function Navbar() {
                 {link.label}
               </Link>
             ))}
+            {quizAvailable && (
+              <Link
+                to="/quiz"
+                onClick={() => setIsOpen(false)}
+                className={`block px-3 py-2 rounded transition-colors ${
+                  location.pathname === "/quiz"
+                    ? "bg-blue-50 text-blue-700 font-semibold"
+                    : "text-gray-600 hover:bg-gray-50"
+                }`}
+              >
+                Quiz
+              </Link>
+            )}
           </div>
         </div>
       )}

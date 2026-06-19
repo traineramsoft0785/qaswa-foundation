@@ -21,6 +21,7 @@ import AdminNotices from "./pages/admin/Notices";
 import AdminDonations from "./pages/admin/Donations";
 import AdminContacts from "./pages/admin/Contacts";
 import AdminChangePassword from "./pages/admin/ChangePassword";
+import QuizRegistration from "./pages/public/QuizRegistration";
 
 export default function App() {
   return (
@@ -36,6 +37,7 @@ export default function App() {
             <Route path="/contact" element={<Contact />} />
             <Route path="/gallery" element={<Gallery />} />
             <Route path="/notices" element={<Notices />} />
+            <Route path="/quiz" element={<QuizRegistration />} />
           </Route>
 
           {/* Admin routes */}

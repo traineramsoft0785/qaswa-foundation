@@ -27,12 +27,15 @@ export default function Home() {
                 Latest Notice
               </span>
               <div className="flex-1 overflow-hidden">
-                <div
+                <a
+                  href={notices[0].url || "#"}
+                  target={notices[0].url ? "_blank" : undefined}
+                  rel={notices[0].url ? "noreferrer" : undefined}
                   className="inline-block whitespace-nowrap"
                   style={{ animation: "marquee 18s linear infinite" }}
                 >
                   {`${notices[0].title}: ${notices[0].content}`}
-                </div>
+                </a>
               </div>
             </div>
           </div>

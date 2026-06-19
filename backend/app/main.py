@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.config import settings
-from app.routes import auth, programs, gallery, notices, donations, contacts, upload, dashboard
+from app.routes import auth, programs, gallery, notices, donations, contacts, upload, dashboard, quiz_registrations
 
 app = FastAPI(title="The Qaswa Foundation API", version="1.0.0")
 
@@ -23,6 +23,7 @@ app.include_router(auth.router)
 app.include_router(programs.router)
 app.include_router(gallery.router)
 app.include_router(notices.router)
+app.include_router(quiz_registrations.router)
 app.include_router(donations.router)
 app.include_router(contacts.router)
 app.include_router(upload.router)
