@@ -5,7 +5,7 @@ export default function About() {
 
       <div className="mt-6 space-y-6 text-gray-600">
         <p className="text-lg">
-          Qaswa Foundation is a charitable trust based in Laxmipur, Raxaul,
+          The Qaswa Foundation is a charitable trust based in Laxmipur, Raxaul,
           dedicated to transforming lives through education. We believe every
           child deserves access to quality education regardless of their
           socio-economic background.

@@ -22,7 +22,7 @@ export default function Navbar() {
           <Link to="/" className="flex items-center gap-2">
             <div>
               <h1 className="font-bold text-xl text-blue-700">
-                Qaswa Foundation
+                The Qaswa Foundation
               </h1>
               <p className="text-xs text-gray-500 italic">التعليم للجميع</p>
             </div>
