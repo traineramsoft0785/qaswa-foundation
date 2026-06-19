@@ -1,3 +1,19 @@
-node_modules
-dist
+# Environment
 .env
+*.env.local
+
+# Frontend
+frontend/node_modules/
+frontend/dist/
+
+# Backend
+backend/__pycache__/
+backend/**/__pycache__/
+backend/*.pyc
+backend/**/*.pyc
+backend/venv/
+backend/.venv/
+
+# IDE
+.vscode/
+.idea/
