@@ -18,6 +18,33 @@ export default function Home() {
 
   return (
     <div>
+      {/* Latest notice banner */}
+      {notices[0] && (
+        <section className="bg-blue-700 text-white overflow-hidden">
+          <div className="max-w-6xl mx-auto px-4 py-3">
+            <div className="flex items-center gap-3">
+              <span className="font-semibold uppercase tracking-[0.2em] text-sm">
+                Latest Notice
+              </span>
+              <div className="flex-1 overflow-hidden">
+                <div
+                  className="inline-block whitespace-nowrap"
+                  style={{ animation: "marquee 18s linear infinite" }}
+                >
+                  {`${notices[0].title}: ${notices[0].content}`}
+                </div>
+              </div>
+            </div>
+          </div>
+          <style>{`
+            @keyframes marquee {
+              0% { transform: translateX(100%); }
+              100% { transform: translateX(-100%); }
+            }
+          `}</style>
+        </section>
+      )}
+
       {/* Hero */}
       <section className="bg-gradient-to-br from-blue-700 to-blue-900 text-white text-center py-20 px-4">
         <h1 className="text-4xl md:text-5xl font-bold">The Qaswa Foundation</h1>
