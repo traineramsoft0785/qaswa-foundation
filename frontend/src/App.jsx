@@ -20,6 +20,7 @@ import AdminGallery from "./pages/admin/Gallery";
 import AdminNotices from "./pages/admin/Notices";
 import AdminDonations from "./pages/admin/Donations";
 import AdminContacts from "./pages/admin/Contacts";
+import AdminChangePassword from "./pages/admin/ChangePassword";
 
 export default function App() {
   return (
@@ -47,6 +48,7 @@ export default function App() {
               <Route path="/admin/notices" element={<AdminNotices />} />
               <Route path="/admin/donations" element={<AdminDonations />} />
               <Route path="/admin/contacts" element={<AdminContacts />} />
+              <Route path="/admin/change-password" element={<AdminChangePassword />} />
             </Route>
           </Route>
         </Routes>

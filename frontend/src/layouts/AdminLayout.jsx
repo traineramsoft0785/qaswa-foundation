@@ -8,6 +8,7 @@ import {
   HiOutlineCurrencyRupee,
   HiOutlineMail,
   HiOutlineLogout,
+  HiOutlineLockClosed,
 } from "react-icons/hi";
 
 const navItems = [
@@ -17,6 +18,7 @@ const navItems = [
   { path: "/admin/notices", label: "Notices", icon: HiOutlineSpeakerphone },
   { path: "/admin/donations", label: "Donations", icon: HiOutlineCurrencyRupee },
   { path: "/admin/contacts", label: "Contacts", icon: HiOutlineMail },
+  { path: "/admin/change-password", label: "Change Password", icon: HiOutlineLockClosed },
 ];
 
 export default function AdminLayout() {
