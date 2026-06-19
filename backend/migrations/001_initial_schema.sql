@@ -75,6 +75,19 @@ CREATE TABLE IF NOT EXISTS contacts (
     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 
+-- Quiz Registrations table
+CREATE TABLE IF NOT EXISTS quiz_registrations (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    name VARCHAR(255) NOT NULL,
+    email VARCHAR(255),
+    phone VARCHAR(20) NOT NULL,
+    school VARCHAR(255),
+    class_name VARCHAR(50),
+    date_of_birth DATE,
+    notice_id UUID REFERENCES notices(id) ON DELETE SET NULL,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
 -- Indexes
 CREATE INDEX IF NOT EXISTS idx_programs_active ON programs (is_active, sort_order);
 CREATE INDEX IF NOT EXISTS idx_notices_active ON notices (is_active, created_at DESC);
@@ -82,6 +95,7 @@ CREATE INDEX IF NOT EXISTS idx_notices_pinned ON notices (is_pinned, created_at 
 CREATE INDEX IF NOT EXISTS idx_gallery_category ON gallery (category, created_at DESC);
 CREATE INDEX IF NOT EXISTS idx_contacts_unread ON contacts (is_read, created_at DESC);
 CREATE INDEX IF NOT EXISTS idx_donations_status ON donations (status, created_at DESC);
+CREATE INDEX IF NOT EXISTS idx_quiz_registrations_notice ON quiz_registrations (notice_id, created_at DESC);
 
 -- Auto-update updated_at trigger
 CREATE OR REPLACE FUNCTION update_updated_at_column()
