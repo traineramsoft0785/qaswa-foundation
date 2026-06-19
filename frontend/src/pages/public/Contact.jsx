@@ -1,7 +1,29 @@
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { submitContact } from "../../api/contacts";
-import { HiOutlineMail, HiOutlinePhone, HiOutlineLocationMarker } from "react-icons/hi";
+import {
+  HiOutlineLocationMarker,
+  HiOutlineMail,
+  HiOutlinePhone,
+} from "react-icons/hi";
+
+const contactDetails = [
+  {
+    icon: HiOutlineLocationMarker,
+    title: "Address",
+    value: "Laxmipur, Raxaul, Bihar",
+  },
+  {
+    icon: HiOutlineMail,
+    title: "Email",
+    value: "theqaswafoundation@gmail.com",
+  },
+  {
+    icon: HiOutlinePhone,
+    title: "Phone",
+    value: "+91 9470601414",
+  },
+];
 
 export default function Contact() {
   const [form, setForm] = useState({
@@ -32,125 +54,119 @@ export default function Contact() {
   };
 
   return (
-    <div className="max-w-6xl mx-auto px-4 py-12">
-      <h1 className="text-3xl font-bold text-blue-700">Contact Us</h1>
+    <div className="page-section">
+      <div className="site-container">
+        <div className="max-w-3xl">
+          <p className="charity-eyebrow">Contact us</p>
+          <h1 className="charity-title mt-3">
+            Reach out to support, volunteer, or learn more.
+          </h1>
+          <p className="charity-copy">
+            Have questions or want to support our cause? Send us a message and
+            we will get back to you as soon as possible.
+          </p>
+        </div>
 
-      <div className="grid md:grid-cols-2 gap-12 mt-8">
-        {/* Contact Form */}
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Name *
-            </label>
-            <input
-              type="text"
-              name="name"
-              value={form.name}
-              onChange={handleChange}
-              required
-              className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Email *
-            </label>
-            <input
-              type="email"
-              name="email"
-              value={form.email}
-              onChange={handleChange}
-              required
-              className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Phone
-            </label>
-            <input
-              type="tel"
-              name="phone"
-              value={form.phone}
-              onChange={handleChange}
-              className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Subject
-            </label>
-            <input
-              type="text"
-              name="subject"
-              value={form.subject}
-              onChange={handleChange}
-              className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Message *
-            </label>
-            <textarea
-              name="message"
-              value={form.message}
-              onChange={handleChange}
-              required
-              rows={5}
-              className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
-          </div>
-
-          <button
-            type="submit"
-            disabled={submitting}
-            className="bg-blue-700 text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-800 transition disabled:opacity-50"
-          >
-            {submitting ? "Sending..." : "Send Message"}
-          </button>
-        </form>
-
-        {/* Contact Info */}
-        <div className="space-y-6">
-          <div>
-            <h2 className="text-xl font-bold text-gray-800 mb-4">
-              Get in Touch
-            </h2>
-            <p className="text-gray-600">
-              Have questions or want to support our cause? Reach out to us
-              and we'll get back to you as soon as possible.
-            </p>
-          </div>
-
-          <div className="space-y-4">
-            <div className="flex items-start gap-3">
-              <HiOutlineLocationMarker className="w-6 h-6 text-blue-700 mt-0.5" />
+        <div className="mt-8 grid gap-8 lg:grid-cols-[1.1fr_0.9fr]">
+          <form onSubmit={handleSubmit} className="charity-card">
+            <div className="grid gap-4 sm:grid-cols-2">
               <div>
-                <h3 className="font-semibold text-gray-800">Address</h3>
-                <p className="text-gray-600">Laxmipur, Raxaul, Bihar</p>
+                <label className="mb-1 block text-sm font-semibold text-stone-700">
+                  Name *
+                </label>
+                <input
+                  type="text"
+                  name="name"
+                  value={form.name}
+                  onChange={handleChange}
+                  required
+                  className="charity-input"
+                />
+              </div>
+
+              <div>
+                <label className="mb-1 block text-sm font-semibold text-stone-700">
+                  Email *
+                </label>
+                <input
+                  type="email"
+                  name="email"
+                  value={form.email}
+                  onChange={handleChange}
+                  required
+                  className="charity-input"
+                />
+              </div>
+
+              <div>
+                <label className="mb-1 block text-sm font-semibold text-stone-700">
+                  Phone
+                </label>
+                <input
+                  type="tel"
+                  name="phone"
+                  value={form.phone}
+                  onChange={handleChange}
+                  className="charity-input"
+                />
+              </div>
+
+              <div>
+                <label className="mb-1 block text-sm font-semibold text-stone-700">
+                  Subject
+                </label>
+                <input
+                  type="text"
+                  name="subject"
+                  value={form.subject}
+                  onChange={handleChange}
+                  className="charity-input"
+                />
               </div>
             </div>
 
-            <div className="flex items-start gap-3">
-              <HiOutlineMail className="w-6 h-6 text-blue-700 mt-0.5" />
-              <div>
-                <h3 className="font-semibold text-gray-800">Email</h3>
-                <p className="text-gray-600">theqaswafoundation@gmail.com</p>
-              </div>
+            <div className="mt-4">
+              <label className="mb-1 block text-sm font-semibold text-stone-700">
+                Message *
+              </label>
+              <textarea
+                name="message"
+                value={form.message}
+                onChange={handleChange}
+                required
+                rows={5}
+                className="charity-input resize-none"
+              />
             </div>
 
-            <div className="flex items-start gap-3">
-              <HiOutlinePhone className="w-6 h-6 text-blue-700 mt-0.5" />
-              <div>
-                <h3 className="font-semibold text-gray-800">Phone</h3>
-                <p className="text-gray-600">+91 9876543210</p>
-              </div>
+            <button type="submit" disabled={submitting} className="charity-button mt-5">
+              {submitting ? "Sending..." : "Send Message"}
+            </button>
+          </form>
+
+          <div className="space-y-5">
+            <div className="rounded-xl bg-emerald-800 p-6 text-white shadow-sm">
+              <h2 className="text-xl font-bold">Get in Touch</h2>
+              <p className="mt-3 leading-7 text-emerald-50">
+                Your support can help a student continue learning, access
+                guidance, and build confidence for the future.
+              </p>
             </div>
+
+            {contactDetails.map((item) => {
+              const Icon = item.icon;
+              return (
+                <div key={item.title} className="charity-card flex items-start gap-3">
+                  <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-emerald-50 text-emerald-800">
+                    <Icon className="h-5 w-5" />
+                  </span>
+                  <div>
+                    <h3 className="font-bold text-stone-900">{item.title}</h3>
+                    <p className="mt-1 text-stone-600">{item.value}</p>
+                  </div>
+                </div>
+              );
+            })}
           </div>
         </div>
       </div>
