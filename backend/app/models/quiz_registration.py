@@ -1,13 +1,13 @@
-from pydantic import BaseModel, EmailStr
+from pydantic import BaseModel, EmailStr, Field
 from typing import Optional
 from datetime import datetime
 from uuid import UUID
 
 
 class QuizRegistrationCreate(BaseModel):
-    name: str
+    name: str = Field(..., min_length=1)
     email: EmailStr
-    phone: Optional[str] = None
+    phone: str = Field(..., min_length=1)
     school: Optional[str] = None
     class_name: Optional[str] = None
     notice_id: Optional[UUID] = None

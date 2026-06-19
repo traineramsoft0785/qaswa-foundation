@@ -20,7 +20,7 @@ export default function Home() {
     <div>
       {/* Latest notice banner */}
       {notices[0] && (
-        <section className="bg-blue-700 text-white overflow-hidden">
+        <section className="bg-amber-700 text-white overflow-hidden">
           <div className="max-w-6xl mx-auto px-4 py-3">
             <div className="flex items-center gap-3">
               <span className="font-semibold uppercase tracking-[0.2em] text-sm">

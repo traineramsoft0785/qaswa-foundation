@@ -112,6 +112,7 @@ export default function QuizRegistration() {
                     name="phone"
                     value={form.phone}
                     onChange={handleChange}
+                    required
                     className="mt-2 w-full rounded-2xl border border-gray-300 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
                   />
                 </div>
@@ -129,13 +130,31 @@ export default function QuizRegistration() {
 
               <div>
                 <label className="block text-sm font-medium text-gray-700">Class</label>
-                <input
-                  type="text"
+                <select
                   name="class_name"
                   value={form.class_name}
                   onChange={handleChange}
-                  className="mt-2 w-full rounded-2xl border border-gray-300 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                />
+                  required
+                  className="mt-2 w-full rounded-2xl border border-gray-300 bg-white px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                >
+                  <option value="">Select Class</option>
+                  <option value="Nursery">Nursery</option>
+                  <option value="LKG">LKG</option>
+                  <option value="UKG">UKG</option>
+                  <option value="1">1</option>
+                  <option value="2">2</option>
+                  <option value="3">3</option>
+                  <option value="4">4</option>
+                  <option value="5">5</option>
+                  <option value="6">6</option>
+                  <option value="7">7</option>
+                  <option value="8">8</option>
+                  <option value="9">9</option>
+                  <option value="10">10</option>
+                  <option value="11">11</option>
+                  <option value="12">12</option>
+                  <option value="Other">Other</option>
+                </select>
               </div>
 
               <button
