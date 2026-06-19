@@ -3,7 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from app.config import settings
 from app.routes import auth, programs, gallery, notices, donations, contacts, upload, dashboard
 
-app = FastAPI(title="Qaswa Foundation API", version="1.0.0")
+app = FastAPI(title="The Qaswa Foundation API", version="1.0.0")
 
 origins = [settings.frontend_url]
 if settings.environment == "development":

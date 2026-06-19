@@ -5,7 +5,7 @@ export default function Footer() {
     <footer className="bg-gray-800 text-white py-8">
       <div className="max-w-7xl mx-auto px-4 grid md:grid-cols-3 gap-8">
         <div>
-          <h3 className="font-bold text-lg">Qaswa Foundation</h3>
+          <h3 className="font-bold text-lg">The Qaswa Foundation</h3>
           <p className="text-sm text-gray-400 italic mt-1">
             التعليم للجميع (Education for All)
           </p>
@@ -34,7 +34,7 @@ export default function Footer() {
       </div>
 
       <div className="text-center text-sm text-gray-500 mt-8 border-t border-gray-700 pt-4">
-        © {new Date().getFullYear()} Qaswa Foundation. All rights reserved.
+        © {new Date().getFullYear()} The Qaswa Foundation. All rights reserved.
       </div>
     </footer>
   );

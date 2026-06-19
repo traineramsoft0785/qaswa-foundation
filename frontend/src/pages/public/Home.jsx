@@ -20,7 +20,7 @@ export default function Home() {
     <div>
       {/* Hero */}
       <section className="bg-gradient-to-br from-blue-700 to-blue-900 text-white text-center py-20 px-4">
-        <h1 className="text-4xl md:text-5xl font-bold">Qaswa Foundation</h1>
+        <h1 className="text-4xl md:text-5xl font-bold">The Qaswa Foundation</h1>
         <p className="mt-2 text-lg italic text-blue-200">
           التعليم للجميع (Education for All)
         </p>
