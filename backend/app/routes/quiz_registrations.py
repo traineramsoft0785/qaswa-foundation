@@ -5,6 +5,12 @@ from app.models.quiz_registration import QuizRegistrationCreate, QuizRegistratio
 router = APIRouter(prefix="/api/quiz-registrations", tags=["QuizRegistrations"])
 
 
+@router.get("/")
+async def get_quiz_registrations():
+    result = supabase.table("quiz_registrations").select("*").order("created_at", desc=True).execute()
+    return result.data
+
+
 @router.post("/", response_model=QuizRegistrationResponse, status_code=201)
 async def create_quiz_registration(data: QuizRegistrationCreate):
     quiz_result = (

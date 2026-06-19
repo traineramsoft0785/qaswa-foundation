@@ -64,21 +64,25 @@ export default function QuizRegistration() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 px-4 py-16">
-      <div className="mx-auto max-w-4xl">
-        <div className="bg-white rounded-3xl shadow-lg overflow-hidden">
-          <div className="bg-blue-700 px-8 py-10 text-white">
-            <h1 className="text-3xl font-bold">Quiz Registration</h1>
-            <p className="mt-3 text-blue-100 leading-7">
-              {quiz.title}
-            </p>
-          </div>
-          <div className="p-8">
-            <div className="rounded-2xl bg-blue-50 p-6 mb-8">
-              <h2 className="text-xl font-semibold text-blue-800">Announcement</h2>
-              <p className="mt-3 text-gray-700">{quiz.content}</p>
-            </div>
+    <div className="min-h-screen bg-gray-50">
+      <div className="bg-amber-700 px-4 py-6 text-white">
+        <div className="mx-auto max-w-4xl">
+          <h1 className="text-3xl font-bold">Quiz Registration</h1>
+        </div>
+      </div>
 
+      <div className="bg-blue-50 px-4 py-6">
+        <div className="mx-auto max-w-4xl">
+          <div className="rounded-2xl bg-white p-6 shadow-sm">
+            <h2 className="text-xl font-semibold text-blue-800">Announcement</h2>
+            <p className="mt-3 text-gray-700">{quiz.content}</p>
+          </div>
+        </div>
+      </div>
+
+      <div className="px-4 py-0">
+        <div className="mx-auto max-w-4xl">
+          <div className="bg-white rounded-3xl shadow-lg overflow-hidden p-8">
             <form onSubmit={handleSubmit} className="space-y-6">
               <div className="grid gap-4 sm:grid-cols-2">
                 <div>

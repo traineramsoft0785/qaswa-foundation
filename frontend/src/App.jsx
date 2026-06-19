@@ -18,6 +18,7 @@ import AdminDashboard from "./pages/admin/Dashboard";
 import AdminPrograms from "./pages/admin/Programs";
 import AdminGallery from "./pages/admin/Gallery";
 import AdminNotices from "./pages/admin/Notices";
+import AdminQuizRegistrations from "./pages/admin/QuizRegistrations";
 import AdminDonations from "./pages/admin/Donations";
 import AdminContacts from "./pages/admin/Contacts";
 import AdminChangePassword from "./pages/admin/ChangePassword";
@@ -48,6 +49,7 @@ export default function App() {
               <Route path="/admin/programs" element={<AdminPrograms />} />
               <Route path="/admin/gallery" element={<AdminGallery />} />
               <Route path="/admin/notices" element={<AdminNotices />} />
+              <Route path="/admin/quiz-registrations" element={<AdminQuizRegistrations />} />
               <Route path="/admin/donations" element={<AdminDonations />} />
               <Route path="/admin/contacts" element={<AdminContacts />} />
               <Route path="/admin/change-password" element={<AdminChangePassword />} />
