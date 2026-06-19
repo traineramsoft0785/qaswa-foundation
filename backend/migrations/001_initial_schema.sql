@@ -97,6 +97,8 @@ CREATE TRIGGER update_programs_updated_at
     BEFORE UPDATE ON programs
     FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
 
+
+
 DROP TRIGGER IF EXISTS update_notices_updated_at ON notices;
 CREATE TRIGGER update_notices_updated_at
     BEFORE UPDATE ON notices
