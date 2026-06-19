@@ -65,83 +65,83 @@ export default function QuizRegistration() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <div className="bg-amber-700 px-4 py-6 text-white">
-        <div className="mx-auto max-w-4xl">
-          <h1 className="text-3xl font-bold">Quiz Registration</h1>
+      <div className="bg-amber-700 px-4 py-3 text-white">
+        <div className="mx-auto max-w-5xl">
+          <h1 className="text-2xl font-bold">Quiz Registration</h1>
         </div>
       </div>
 
-      <div className="bg-blue-50 px-4 py-6">
-        <div className="mx-auto max-w-4xl">
-          <div className="rounded-2xl bg-white p-6 shadow-sm">
-            <h2 className="text-xl font-semibold text-blue-800">Announcement</h2>
-            <p className="mt-3 text-gray-700">{quiz.content}</p>
+      <div className="bg-blue-50 px-4 py-3">
+        <div className="mx-auto max-w-5xl">
+          <div className="rounded-lg bg-white p-4 shadow-sm">
+            <h2 className="text-base font-semibold text-blue-800">Announcement</h2>
+            <p className="mt-2 text-sm text-gray-700">{quiz.content}</p>
           </div>
         </div>
       </div>
 
       <div className="px-4 py-0">
-        <div className="mx-auto max-w-4xl">
-          <div className="bg-white rounded-3xl shadow-lg overflow-hidden p-8">
+        <div className="mx-auto max-w-5xl">
+          <div className="bg-white rounded-lg shadow-lg overflow-hidden p-7">
             <form onSubmit={handleSubmit} className="space-y-6">
-              <div className="grid gap-4 sm:grid-cols-2">
+              <div className="grid gap-6 sm:grid-cols-2">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">Name</label>
+                  <label className="block text-xs font-medium text-gray-700">Name</label>
                   <input
                     type="text"
                     name="name"
                     value={form.name}
                     onChange={handleChange}
                     required
-                    className="mt-2 w-full rounded-2xl border border-gray-300 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="mt-1 w-full rounded-lg border border-gray-300 px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">Email (optional)</label>
+                  <label className="block text-xs font-medium text-gray-700">Email (optional)</label>
                   <input
                     type="email"
                     name="email"
                     value={form.email}
                     onChange={handleChange}
-                    className="mt-2 w-full rounded-2xl border border-gray-300 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="mt-1 w-full rounded-lg border border-gray-300 px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                     placeholder="Optional"
                   />
                 </div>
               </div>
 
-              <div className="grid gap-4 sm:grid-cols-2">
+              <div className="grid gap-6 sm:grid-cols-2">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">Phone</label>
+                  <label className="block text-xs font-medium text-gray-700">Phone</label>
                   <input
                     type="tel"
                     name="phone"
                     value={form.phone}
                     onChange={handleChange}
                     required
-                    className="mt-2 w-full rounded-2xl border border-gray-300 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="mt-1 w-full rounded-lg border border-gray-300 px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">School</label>
+                  <label className="block text-xs font-medium text-gray-700">School</label>
                   <input
                     type="text"
                     name="school"
                     value={form.school}
                     onChange={handleChange}
-                    className="mt-2 w-full rounded-2xl border border-gray-300 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="mt-1 w-full rounded-lg border border-gray-300 px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                   />
                 </div>
               </div>
 
-              <div className="grid gap-4 sm:grid-cols-2">
+              <div className="grid gap-6 sm:grid-cols-2">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">Class</label>
+                  <label className="block text-xs font-medium text-gray-700">Class</label>
                   <select
                     name="class_name"
                     value={form.class_name}
                     onChange={handleChange}
                     required
-                    className="mt-2 w-full rounded-2xl border border-gray-300 bg-white px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="mt-1 w-full rounded-lg border border-gray-300 bg-white px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                   >
                     <option value="">Select Class</option>
                     <option value="Nursery">Nursery</option>
@@ -163,13 +163,13 @@ export default function QuizRegistration() {
                   </select>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">Date of Birth</label>
+                  <label className="block text-xs font-medium text-gray-700">Date of Birth</label>
                   <input
                     type="date"
                     name="date_of_birth"
                     value={form.date_of_birth}
                     onChange={handleChange}
-                    className="mt-2 w-full rounded-2xl border border-gray-300 bg-white px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="mt-1 w-full rounded-lg border border-gray-300 bg-white px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                   />
                 </div>
               </div>
@@ -177,7 +177,7 @@ export default function QuizRegistration() {
               <button
                 type="submit"
                 disabled={submitting}
-                className="w-full rounded-2xl bg-blue-700 px-6 py-3 text-white font-semibold hover:bg-blue-800 transition disabled:opacity-50"
+                className="w-full rounded-lg bg-blue-700 px-4 py-2 text-sm text-white font-semibold hover:bg-blue-800 transition disabled:opacity-50\"
               >
                 {submitting ? "Submitting..." : "Register for Quiz"}
               </button>
