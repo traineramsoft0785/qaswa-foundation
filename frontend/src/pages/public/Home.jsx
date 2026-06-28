@@ -93,18 +93,19 @@ export default function Home() {
           {programs.length > 0 ? (
             <div className="grid md:grid-cols-3 gap-6">
               {programs.map((p) => (
-                <div
+                <Link
                   key={p.id}
-                  className="bg-white shadow-md rounded-lg overflow-hidden hover:shadow-lg transition"
+                  to={`/programs/${p.slug}`}
+                  className="bg-white shadow-md rounded-lg overflow-hidden hover:shadow-lg transition h-[320px] flex flex-col"
                 >
                   {p.image_url && (
                     <img
                       src={p.image_url}
                       alt={p.title}
-                      className="w-full h-48 object-cover"
+                      className="w-full h-48 object-cover flex-shrink-0"
                     />
                   )}
-                  <div className="p-5">
+                  <div className="p-5 flex-1 overflow-hidden">
                     <h3 className="font-bold text-lg text-gray-800">
                       {p.title}
                     </h3>
@@ -112,7 +113,7 @@ export default function Home() {
                       {p.description}
                     </p>
                   </div>
-                </div>
+                </Link>
               ))}
             </div>
           ) : (

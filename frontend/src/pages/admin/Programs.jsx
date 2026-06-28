@@ -1,12 +1,29 @@
 import { useState, useEffect } from "react";
 import toast from "react-hot-toast";
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
 import { getAllPrograms, createProgram, updateProgram, deleteProgram } from "../../api/programs";
 import FormModal from "../../components/admin/FormModal";
 import DeleteConfirmDialog from "../../components/admin/DeleteConfirmDialog";
 import StatusBadge from "../../components/admin/StatusBadge";
 import ImageUpload from "../../components/admin/ImageUpload";
 
-const emptyForm = { title: "", description: "", image_url: "", is_active: true, sort_order: 0 };
+const emptyForm = {
+  title: "", description: "", slug: "", content: "",
+  image_url: "", is_active: true, sort_order: 0,
+};
+
+const quillModules = {
+  toolbar: [
+    [{ header: [1, 2, 3, false] }],
+    ["bold", "italic", "underline", "strike"],
+    [{ color: [] }, { background: [] }],
+    [{ list: "ordered" }, { list: "bullet" }],
+    [{ align: [] }],
+    ["blockquote", "link", "image"],
+    ["clean"],
+  ],
+};
 
 export default function AdminPrograms() {
   const [programs, setPrograms] = useState([]);
@@ -35,6 +52,8 @@ export default function AdminPrograms() {
     setForm({
       title: p.title,
       description: p.description,
+      slug: p.slug || "",
+      content: p.content || "",
       image_url: p.image_url || "",
       is_active: p.is_active,
       sort_order: p.sort_order,
@@ -46,7 +65,12 @@ export default function AdminPrograms() {
     e.preventDefault();
     setSaving(true);
     try {
-      const data = { ...form, image_url: form.image_url || null };
+      const data = {
+        ...form,
+        image_url: form.image_url || null,
+        slug: form.slug || null,
+        content: form.content || null,
+      };
       if (editing === "new") {
         await createProgram(data);
         toast.success("Program created");
@@ -56,8 +80,9 @@ export default function AdminPrograms() {
       }
       setEditing(null);
       load();
-    } catch {
-      toast.error("Failed to save program");
+    } catch (err) {
+      const detail = err.response?.data?.detail;
+      toast.error(detail || "Failed to save program");
     } finally {
       setSaving(false);
     }
@@ -109,7 +134,14 @@ export default function AdminPrograms() {
                       {p.image_url && (
                         <img src={p.image_url} alt="" className="w-10 h-10 rounded object-cover" />
                       )}
-                      <span className="font-medium text-gray-800">{p.title}</span>
+                      <div>
+                        <span className="font-medium text-gray-800">{p.title}</span>
+                        {p.content && (
+                          <span className="ml-2 text-xs bg-green-100 text-green-700 px-1.5 py-0.5 rounded">
+                            Has Page
+                          </span>
+                        )}
+                      </div>
                     </div>
                   </td>
                   <td className="px-4 py-3">
@@ -149,6 +181,7 @@ export default function AdminPrograms() {
         <FormModal
           title={editing === "new" ? "Add Program" : "Edit Program"}
           onClose={() => setEditing(null)}
+          size="4xl"
         >
           <form onSubmit={handleSave} className="space-y-4">
             <ImageUpload
@@ -167,13 +200,40 @@ export default function AdminPrograms() {
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Description</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                URL Slug
+                <span className="text-gray-400 font-normal ml-1">(auto-generated if empty)</span>
+              </label>
+              <input
+                type="text"
+                value={form.slug}
+                onChange={(e) => setForm({ ...form, slug: e.target.value })}
+                placeholder="e.g. free-education-program"
+                className="w-full border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Short Description</label>
               <textarea
                 value={form.description}
                 onChange={(e) => setForm({ ...form, description: e.target.value })}
                 required
-                rows={4}
+                rows={3}
+                placeholder="Brief summary shown on program cards"
                 className="w-full border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Page Content
+                <span className="text-gray-400 font-normal ml-1">(rich text for detail page)</span>
+              </label>
+              <ReactQuill
+                theme="snow"
+                value={form.content}
+                onChange={(value) => setForm({ ...form, content: value })}
+                modules={quillModules}
+                className="bg-white rounded-lg"
               />
             </div>
             <div className="grid grid-cols-2 gap-4">

@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import { getActivePrograms } from "../../api/programs";
 
 export default function Programs() {
@@ -27,22 +28,23 @@ export default function Programs() {
       ) : programs.length > 0 ? (
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mt-8">
           {programs.map((p) => (
-            <div
+            <Link
               key={p.id}
-              className="bg-white shadow-md rounded-lg overflow-hidden hover:shadow-lg transition"
+              to={`/programs/${p.slug}`}
+              className="bg-white shadow-md rounded-lg overflow-hidden hover:shadow-lg transition h-[320px] flex flex-col"
             >
               {p.image_url && (
                 <img
                   src={p.image_url}
                   alt={p.title}
-                  className="w-full h-48 object-cover"
+                  className="w-full h-48 object-cover flex-shrink-0"
                 />
               )}
-              <div className="p-5">
+              <div className="p-5 flex-1 overflow-hidden">
                 <h3 className="font-bold text-lg text-gray-800">{p.title}</h3>
-                <p className="text-gray-600 mt-2">{p.description}</p>
+                <p className="text-gray-600 mt-2 line-clamp-3">{p.description}</p>
               </div>
-            </div>
+            </Link>
           ))}
         </div>
       ) : (

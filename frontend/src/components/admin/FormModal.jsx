@@ -1,8 +1,10 @@
-export default function FormModal({ title, onClose, children }) {
+const sizeClasses = { lg: "max-w-lg", xl: "max-w-xl", "2xl": "max-w-2xl", "4xl": "max-w-4xl" };
+
+export default function FormModal({ title, onClose, children, size = "lg" }) {
   return (
     <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
       <div
-        className="bg-white rounded-lg shadow-xl w-full max-w-lg max-h-[90vh] overflow-y-auto"
+        className={`bg-white rounded-lg shadow-xl w-full ${sizeClasses[size] || "max-w-lg"} max-h-[90vh] overflow-y-auto`}
         onClick={(e) => e.stopPropagation()}
       >
         <div className="flex justify-between items-center p-4 border-b">

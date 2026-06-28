@@ -9,6 +9,7 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import Home from "./pages/public/Home";
 import About from "./pages/public/About";
 import Programs from "./pages/public/Programs";
+import ProgramDetail from "./pages/public/ProgramDetail";
 import Contact from "./pages/public/Contact";
 import Gallery from "./pages/public/Gallery";
 import Notices from "./pages/public/Notices";
@@ -35,6 +36,7 @@ export default function App() {
             <Route path="/" element={<Home />} />
             <Route path="/about" element={<About />} />
             <Route path="/programs" element={<Programs />} />
+            <Route path="/programs/:slug" element={<ProgramDetail />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/gallery" element={<Gallery />} />
             <Route path="/notices" element={<Notices />} />

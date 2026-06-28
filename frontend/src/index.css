@@ -41,3 +41,12 @@
     @apply inline-flex items-center justify-center rounded-lg bg-emerald-800 px-5 py-2.5 font-semibold text-white transition hover:bg-emerald-900 disabled:cursor-not-allowed disabled:opacity-70;
   }
 }
+
+/* Quill editor overrides */
+.ql-container {
+  min-height: 200px;
+  font-size: 1rem;
+}
+.ql-editor {
+  min-height: 200px;
+}
