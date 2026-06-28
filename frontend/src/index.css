@@ -50,3 +50,27 @@
 .ql-editor {
   min-height: 200px;
 }
+
+/* Normalize Quill HTML inside prose container */
+.prose p {
+  margin-top: 0.75em;
+  margin-bottom: 0.75em;
+  line-height: 1.75;
+}
+.prose br {
+  display: block;
+  content: "";
+  margin-top: 0.5em;
+}
+.prose p:empty {
+  margin-top: 0.25em;
+  margin-bottom: 0.25em;
+}
+.prose ul, .prose ol {
+  margin-top: 0.75em;
+  margin-bottom: 0.75em;
+}
+.prose h1, .prose h2, .prose h3 {
+  margin-top: 1.25em;
+  margin-bottom: 0.5em;
+}
