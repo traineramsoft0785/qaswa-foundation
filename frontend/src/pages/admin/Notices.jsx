@@ -5,7 +5,7 @@ import FormModal from "../../components/admin/FormModal";
 import DeleteConfirmDialog from "../../components/admin/DeleteConfirmDialog";
 import StatusBadge from "../../components/admin/StatusBadge";
 
-const emptyForm = { title: "", content: "", url: "", is_pinned: false, is_active: true, is_quiz: false };
+const emptyForm = { title: "", content: "", url: "", is_pinned: false, is_active: true };
 
 export default function AdminNotices() {
   const [notices, setNotices] = useState([]);
@@ -37,7 +37,6 @@ export default function AdminNotices() {
       url: n.url || "",
       is_pinned: n.is_pinned,
       is_active: n.is_active,
-      is_quiz: n.is_quiz,
     });
     setEditing(n.id);
   };
@@ -196,15 +195,6 @@ export default function AdminNotices() {
                   className="w-4 h-4"
                 />
                 <span className="text-sm font-medium text-gray-700">Active</span>
-              </label>
-              <label className="flex items-center gap-2">
-                <input
-                  type="checkbox"
-                  checked={form.is_quiz}
-                  onChange={(e) => setForm({ ...form, is_quiz: e.target.checked })}
-                  className="w-4 h-4"
-                />
-                <span className="text-sm font-medium text-gray-700">Quiz Announcement</span>
               </label>
             </div>
             <div className="flex gap-3 justify-end pt-2">

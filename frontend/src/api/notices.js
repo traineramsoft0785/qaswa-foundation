@@ -1,7 +1,6 @@
 import client from "./client";
 
 export const getActiveNotices = () => client.get("/api/notices");
-export const getActiveQuizAnnouncement = () => client.get("/api/notices/quiz");
 export const getAllNotices = () => client.get("/api/notices/admin/all");
 export const getNotice = (id) => client.get(`/api/notices/${id}`);
 export const createNotice = (data) => client.post("/api/notices", data);

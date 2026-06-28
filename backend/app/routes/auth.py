@@ -38,6 +38,7 @@ async def login(data: LoginRequest):
         "email": user["email"],
         "name": user["name"],
         "role": user["role"],
+        "type": "admin",
         "exp": datetime.utcnow() + timedelta(minutes=settings.jwt_expiration_minutes),
     }
     token = jwt.encode(token_data, settings.jwt_secret, algorithm=settings.jwt_algorithm)

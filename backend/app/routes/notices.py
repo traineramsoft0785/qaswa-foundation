@@ -31,22 +31,6 @@ async def get_all_notices(admin: dict = Depends(get_current_admin)):
     return result.data
 
 
-@router.get("/quiz", response_model=NoticeResponse)
-async def get_active_quiz_notice():
-    result = (
-        supabase.table("notices")
-        .select("*")
-        .eq("is_active", True)
-        .eq("is_quiz", True)
-        .order("created_at", desc=True)
-        .limit(1)
-        .execute()
-    )
-    if not result.data:
-        raise HTTPException(status_code=404, detail="No active quiz announcement")
-    return result.data[0]
-
-
 @router.get("/{notice_id}", response_model=NoticeResponse)
 async def get_notice(notice_id: str):
     result = (

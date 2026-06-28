@@ -1,7 +1,7 @@
-import { useState, useEffect } from "react";
-import { Link, useLocation } from "react-router-dom";
-import { HiMenu, HiX } from "react-icons/hi";
-import { getActiveQuizAnnouncement } from "../api/notices";
+import { useState, useRef, useEffect } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { HiMenu, HiX, HiOutlineUser } from "react-icons/hi";
+import { useUserAuth } from "../contexts/UserAuthContext";
 
 const links = [
   { to: "/", label: "Home" },
@@ -9,19 +9,33 @@ const links = [
   { to: "/programs", label: "Programs" },
   { to: "/gallery", label: "Gallery" },
   { to: "/notices", label: "Notices" },
+  { to: "/quizzes", label: "Quizzes" },
   { to: "/contact", label: "Contact" },
 ];
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
-  const [quizAvailable, setQuizAvailable] = useState(false);
+  const [userMenuOpen, setUserMenuOpen] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
+  const { user, logoutUser } = useUserAuth();
+  const userMenuRef = useRef(null);
 
   useEffect(() => {
-    getActiveQuizAnnouncement()
-      .then(() => setQuizAvailable(true))
-      .catch(() => setQuizAvailable(false));
+    const handleClickOutside = (e) => {
+      if (userMenuRef.current && !userMenuRef.current.contains(e.target)) {
+        setUserMenuOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
+
+  const handleLogout = () => {
+    logoutUser();
+    setUserMenuOpen(false);
+    navigate("/");
+  };
 
   return (
     <nav className="bg-white shadow-md">
@@ -37,7 +51,7 @@ export default function Navbar() {
           </Link>
 
           {/* Desktop links */}
-          <div className="hidden md:flex space-x-6 font-medium">
+          <div className="hidden md:flex items-center space-x-6 font-medium">
             {links.map((link) => (
               <Link
                 key={link.to}
@@ -51,16 +65,48 @@ export default function Navbar() {
                 {link.label}
               </Link>
             ))}
-            {quizAvailable && (
+
+            {/* User auth section */}
+            {user ? (
+              <div className="relative" ref={userMenuRef}>
+                <button
+                  onClick={() => setUserMenuOpen(!userMenuOpen)}
+                  className="flex items-center gap-1.5 text-gray-600 hover:text-green-700 transition-colors"
+                >
+                  <HiOutlineUser className="w-5 h-5" />
+                  <span className="text-sm">{user.name.split(" ")[0]}</span>
+                </button>
+                {userMenuOpen && (
+                  <div className="absolute right-0 mt-2 w-44 bg-white rounded-lg shadow-lg border py-1 z-50">
+                    <Link
+                      to="/user/dashboard"
+                      onClick={() => setUserMenuOpen(false)}
+                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
+                    >
+                      Dashboard
+                    </Link>
+                    <Link
+                      to="/user/profile"
+                      onClick={() => setUserMenuOpen(false)}
+                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
+                    >
+                      Profile
+                    </Link>
+                    <button
+                      onClick={handleLogout}
+                      className="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-50"
+                    >
+                      Logout
+                    </button>
+                  </div>
+                )}
+              </div>
+            ) : (
               <Link
-                to="/quiz"
-                className={`transition-colors ${
-                  location.pathname === "/quiz"
-                    ? "text-blue-700 font-semibold"
-                    : "text-gray-600 hover:text-blue-600"
-                }`}
+                to="/user/login"
+                className="text-sm bg-green-700 text-white px-4 py-1.5 rounded-lg hover:bg-green-800 transition"
               >
-                Quiz
+                Login
               </Link>
             )}
           </div>
@@ -93,19 +139,40 @@ export default function Navbar() {
                 {link.label}
               </Link>
             ))}
-            {quizAvailable && (
-              <Link
-                to="/quiz"
-                onClick={() => setIsOpen(false)}
-                className={`block px-3 py-2 rounded transition-colors ${
-                  location.pathname === "/quiz"
-                    ? "bg-blue-50 text-blue-700 font-semibold"
-                    : "text-gray-600 hover:bg-gray-50"
-                }`}
-              >
-                Quiz
-              </Link>
-            )}
+            <div className="border-t pt-2 mt-2">
+              {user ? (
+                <>
+                  <Link
+                    to="/user/dashboard"
+                    onClick={() => setIsOpen(false)}
+                    className="block px-3 py-2 rounded text-gray-600 hover:bg-gray-50"
+                  >
+                    Dashboard
+                  </Link>
+                  <Link
+                    to="/user/profile"
+                    onClick={() => setIsOpen(false)}
+                    className="block px-3 py-2 rounded text-gray-600 hover:bg-gray-50"
+                  >
+                    Profile
+                  </Link>
+                  <button
+                    onClick={() => { handleLogout(); setIsOpen(false); }}
+                    className="block w-full text-left px-3 py-2 rounded text-red-600 hover:bg-gray-50"
+                  >
+                    Logout
+                  </button>
+                </>
+              ) : (
+                <Link
+                  to="/user/login"
+                  onClick={() => setIsOpen(false)}
+                  className="block px-3 py-2 rounded text-green-700 font-medium hover:bg-gray-50"
+                >
+                  Login / Register
+                </Link>
+              )}
+            </div>
           </div>
         </div>
       )}

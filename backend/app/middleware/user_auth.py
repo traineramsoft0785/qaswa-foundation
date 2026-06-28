@@ -6,7 +6,7 @@ from app.config import settings
 security = HTTPBearer()
 
 
-async def get_current_admin(
+async def get_current_user(
     credentials: HTTPAuthorizationCredentials = Depends(security),
 ) -> dict:
     token = credentials.credentials
@@ -16,7 +16,7 @@ async def get_current_admin(
         )
         user_id: str = payload.get("sub")
         token_type: str = payload.get("type")
-        if user_id is None or token_type != "admin":
+        if user_id is None or token_type != "user":
             raise HTTPException(
                 status_code=status.HTTP_401_UNAUTHORIZED,
                 detail="Invalid token",
@@ -25,7 +25,6 @@ async def get_current_admin(
             "id": user_id,
             "email": payload.get("email"),
             "name": payload.get("name"),
-            "role": payload.get("role"),
         }
     except JWTError:
         raise HTTPException(

@@ -9,7 +9,7 @@ import {
   HiOutlineMail,
   HiOutlineLogout,
   HiOutlineLockClosed,
-  HiOutlineClipboardList,
+  HiOutlineAcademicCap,
 } from "react-icons/hi";
 
 const navItems = [
@@ -17,7 +17,7 @@ const navItems = [
   { path: "/admin/programs", label: "Programs", icon: HiOutlineBookOpen },
   { path: "/admin/gallery", label: "Gallery", icon: HiOutlinePhotograph },
   { path: "/admin/notices", label: "Notices", icon: HiOutlineSpeakerphone },
-  { path: "/admin/quiz-registrations", label: "Quiz Registrations", icon: HiOutlineClipboardList },
+  { path: "/admin/quizzes", label: "Quizzes", icon: HiOutlineAcademicCap },
   { path: "/admin/donations", label: "Donations", icon: HiOutlineCurrencyRupee },
   { path: "/admin/contacts", label: "Contacts", icon: HiOutlineMail },
   { path: "/admin/change-password", label: "Change Password", icon: HiOutlineLockClosed },
