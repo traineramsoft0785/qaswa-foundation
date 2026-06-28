@@ -7,6 +7,7 @@ import {
   HiOutlineSpeakerphone,
   HiOutlineCurrencyRupee,
   HiOutlineMail,
+  HiOutlineUserGroup,
 } from "react-icons/hi";
 
 export default function AdminDashboard() {
@@ -57,6 +58,13 @@ export default function AdminDashboard() {
       icon: HiOutlineCurrencyRupee,
       link: "/admin/donations",
       color: "bg-green-500",
+    },
+    {
+      label: "Board Advisors",
+      value: stats?.total_advisors || 0,
+      icon: HiOutlineUserGroup,
+      link: "/admin/advisors",
+      color: "bg-indigo-500",
     },
     {
       label: "Unread Messages",

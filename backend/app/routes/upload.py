@@ -5,7 +5,7 @@ import uuid
 
 router = APIRouter(prefix="/api/upload", tags=["Upload"])
 
-ALLOWED_BUCKETS = ["program-images", "gallery-images", "notice-attachments"]
+ALLOWED_BUCKETS = ["program-images", "gallery-images", "notice-attachments", "advisor-images"]
 ALLOWED_TYPES = ["image/jpeg", "image/png", "image/webp", "application/pdf"]
 MAX_SIZE = 5 * 1024 * 1024  # 5MB
 

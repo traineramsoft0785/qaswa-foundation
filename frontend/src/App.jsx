@@ -31,6 +31,8 @@ import AdminQuizzes from "./pages/admin/Quizzes";
 import AdminDonations from "./pages/admin/Donations";
 import AdminContacts from "./pages/admin/Contacts";
 import AdminChangePassword from "./pages/admin/ChangePassword";
+import AdminAdvisors from "./pages/admin/Advisors";
+import BoardAdvisors from "./pages/public/BoardAdvisors";
 
 export default function App() {
   return (
@@ -48,6 +50,7 @@ export default function App() {
               <Route path="/contact" element={<Contact />} />
               <Route path="/gallery" element={<Gallery />} />
               <Route path="/notices" element={<Notices />} />
+              <Route path="/board-of-advisors" element={<BoardAdvisors />} />
               <Route path="/quizzes" element={<QuizList />} />
               <Route path="/user/login" element={<UserLogin />} />
               <Route path="/user/register" element={<UserRegister />} />
@@ -70,6 +73,7 @@ export default function App() {
                 <Route path="/admin/quizzes" element={<AdminQuizzes />} />
                 <Route path="/admin/donations" element={<AdminDonations />} />
                 <Route path="/admin/contacts" element={<AdminContacts />} />
+                <Route path="/admin/advisors" element={<AdminAdvisors />} />
                 <Route path="/admin/change-password" element={<AdminChangePassword />} />
               </Route>
             </Route>
