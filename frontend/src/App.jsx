@@ -32,7 +32,10 @@ import AdminDonations from "./pages/admin/Donations";
 import AdminContacts from "./pages/admin/Contacts";
 import AdminChangePassword from "./pages/admin/ChangePassword";
 import AdminAdvisors from "./pages/admin/Advisors";
+import AdminTrustees from "./pages/admin/Trustees";
+import AdminSiteContent from "./pages/admin/SiteContent";
 import BoardAdvisors from "./pages/public/BoardAdvisors";
+import BoardTrustees from "./pages/public/BoardTrustees";
 
 export default function App() {
   return (
@@ -51,6 +54,7 @@ export default function App() {
               <Route path="/gallery" element={<Gallery />} />
               <Route path="/notices" element={<Notices />} />
               <Route path="/board-of-advisors" element={<BoardAdvisors />} />
+              <Route path="/board-of-trustees" element={<BoardTrustees />} />
               <Route path="/quizzes" element={<QuizList />} />
               <Route path="/user/login" element={<UserLogin />} />
               <Route path="/user/register" element={<UserRegister />} />
@@ -67,6 +71,7 @@ export default function App() {
             <Route element={<ProtectedRoute />}>
               <Route element={<AdminLayout />}>
                 <Route path="/admin" element={<AdminDashboard />} />
+                <Route path="/admin/site-content" element={<AdminSiteContent />} />
                 <Route path="/admin/programs" element={<AdminPrograms />} />
                 <Route path="/admin/gallery" element={<AdminGallery />} />
                 <Route path="/admin/notices" element={<AdminNotices />} />
@@ -74,6 +79,7 @@ export default function App() {
                 <Route path="/admin/donations" element={<AdminDonations />} />
                 <Route path="/admin/contacts" element={<AdminContacts />} />
                 <Route path="/admin/advisors" element={<AdminAdvisors />} />
+                <Route path="/admin/trustees" element={<AdminTrustees />} />
                 <Route path="/admin/change-password" element={<AdminChangePassword />} />
               </Route>
             </Route>

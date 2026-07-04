@@ -2,10 +2,27 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { getActivePrograms } from "../../api/programs";
 import { getActiveNotices } from "../../api/notices";
+import { getPageContent } from "../../api/siteContent";
+
+const FALLBACK = {
+  hero: {
+    heading: "The Qaswa Foundation",
+    tagline: "التعليم للجميع (Education for All)",
+    subtitle:
+      "A charitable trust in Laxmipur, Raxaul working to provide education, skills, and opportunities to underprivileged children.",
+    primary_button_label: "Donate Now",
+    secondary_button_label: "Learn More",
+  },
+  who_we_are: {
+    heading: "Who We Are",
+    body: "We believe education is the most powerful tool to transform lives. Our mission is to bring equal opportunities to every child regardless of their background or circumstances.",
+  },
+};
 
 export default function Home() {
   const [programs, setPrograms] = useState([]);
   const [notices, setNotices] = useState([]);
+  const [content, setContent] = useState(FALLBACK);
 
   useEffect(() => {
     getActivePrograms()
@@ -14,7 +31,18 @@ export default function Home() {
     getActiveNotices()
       .then((res) => setNotices(res.data.slice(0, 3)))
       .catch(() => {});
+    getPageContent("home")
+      .then((res) => {
+        const bySection = {};
+        res.data.forEach((row) => {
+          bySection[row.section_key] = row.data;
+        });
+        setContent((prev) => ({ ...prev, ...bySection }));
+      })
+      .catch(() => {});
   }, []);
+
+  const { hero, who_we_are } = content;
 
   return (
     <div>
@@ -50,38 +78,29 @@ export default function Home() {
 
       {/* Hero */}
       <section className="bg-gradient-to-br from-blue-700 to-blue-900 text-white text-center py-20 px-4">
-        <h1 className="text-4xl md:text-5xl font-bold">The Qaswa Foundation</h1>
-        <p className="mt-2 text-lg italic text-blue-200">
-          التعليم للجميع (Education for All)
-        </p>
-        <p className="mt-4 max-w-xl mx-auto text-blue-100">
-          A charitable trust in Laxmipur, Raxaul working to provide education,
-          skills, and opportunities to underprivileged children.
-        </p>
+        <h1 className="text-4xl md:text-5xl font-bold">{hero.heading}</h1>
+        <p className="mt-2 text-lg italic text-blue-200">{hero.tagline}</p>
+        <p className="mt-4 max-w-xl mx-auto text-blue-100">{hero.subtitle}</p>
         <div className="mt-8 flex gap-4 justify-center">
           <Link
             to="/contact"
             className="bg-white text-blue-700 px-6 py-3 rounded-lg font-semibold hover:bg-blue-50 transition"
           >
-            Donate Now
+            {hero.primary_button_label}
           </Link>
           <Link
             to="/about"
             className="border-2 border-white text-white px-6 py-3 rounded-lg font-semibold hover:bg-white/10 transition"
           >
-            Learn More
+            {hero.secondary_button_label}
           </Link>
         </div>
       </section>
 
       {/* Who We Are */}
       <section className="py-16 px-4 text-center max-w-4xl mx-auto">
-        <h2 className="text-3xl font-bold text-blue-700">Who We Are</h2>
-        <p className="mt-4 text-gray-600 text-lg">
-          We believe education is the most powerful tool to transform lives. Our
-          mission is to bring equal opportunities to every child regardless of
-          their background or circumstances.
-        </p>
+        <h2 className="text-3xl font-bold text-blue-700">{who_we_are.heading}</h2>
+        <p className="mt-4 text-gray-600 text-lg">{who_we_are.body}</p>
       </section>
 
       {/* Programs */}

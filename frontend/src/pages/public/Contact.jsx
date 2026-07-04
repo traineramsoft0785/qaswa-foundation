@@ -1,29 +1,18 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import toast from "react-hot-toast";
 import { submitContact } from "../../api/contacts";
+import { getPageContent } from "../../api/siteContent";
 import {
   HiOutlineLocationMarker,
   HiOutlineMail,
   HiOutlinePhone,
 } from "react-icons/hi";
 
-const contactDetails = [
-  {
-    icon: HiOutlineLocationMarker,
-    title: "Address",
-    value: "Laxmipur, Raxaul, Bihar",
-  },
-  {
-    icon: HiOutlineMail,
-    title: "Email",
-    value: "theqaswafoundation@gmail.com",
-  },
-  {
-    icon: HiOutlinePhone,
-    title: "Phone",
-    value: "+91 9470601414",
-  },
-];
+const FALLBACK_CONTACT_INFO = {
+  address: "Laxmipur, Raxaul, Bihar",
+  email: "theqaswafoundation@gmail.com",
+  phone: "+91 9470601414",
+};
 
 export default function Contact() {
   const [form, setForm] = useState({
@@ -34,6 +23,34 @@ export default function Contact() {
     message: "",
   });
   const [submitting, setSubmitting] = useState(false);
+  const [contactInfo, setContactInfo] = useState(FALLBACK_CONTACT_INFO);
+
+  useEffect(() => {
+    getPageContent("global")
+      .then((res) => {
+        const section = res.data.find((row) => row.section_key === "contact_info");
+        if (section) setContactInfo(section.data);
+      })
+      .catch(() => {});
+  }, []);
+
+  const contactDetails = [
+    {
+      icon: HiOutlineLocationMarker,
+      title: "Address",
+      value: contactInfo.address,
+    },
+    {
+      icon: HiOutlineMail,
+      title: "Email",
+      value: contactInfo.email,
+    },
+    {
+      icon: HiOutlinePhone,
+      title: "Phone",
+      value: contactInfo.phone,
+    },
+  ];
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });

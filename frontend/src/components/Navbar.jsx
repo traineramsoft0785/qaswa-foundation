@@ -1,7 +1,8 @@
-import { useState, useRef, useEffect } from "react";
+import { Fragment, useState, useRef, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { HiMenu, HiX, HiOutlineUser } from "react-icons/hi";
+import { HiMenu, HiX, HiOutlineUser, HiChevronDown } from "react-icons/hi";
 import { useUserAuth } from "../contexts/UserAuthContext";
+import { getPageContent } from "../api/siteContent";
 
 const links = [
   { to: "/", label: "Home" },
@@ -10,22 +11,43 @@ const links = [
   { to: "/gallery", label: "Gallery" },
   { to: "/notices", label: "Notices" },
   { to: "/quizzes", label: "Quizzes" },
-  { to: "/board-of-advisors", label: "Board of Advisors" },
   { to: "/contact", label: "Contact" },
+];
+
+const peopleLinks = [
+  { to: "/board-of-advisors", label: "Board of Advisors" },
+  { to: "/board-of-trustees", label: "Board of Trustees" },
 ];
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [userMenuOpen, setUserMenuOpen] = useState(false);
+  const [peopleMenuOpen, setPeopleMenuOpen] = useState(false);
+  const [peopleMobileOpen, setPeopleMobileOpen] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
   const { user, logoutUser } = useUserAuth();
   const userMenuRef = useRef(null);
+  const peopleMenuRef = useRef(null);
+  const [logoUrl, setLogoUrl] = useState("");
+  const isPeopleActive = peopleLinks.some((l) => l.to === location.pathname);
+
+  useEffect(() => {
+    getPageContent("global")
+      .then((res) => {
+        const branding = res.data.find((row) => row.section_key === "footer_branding");
+        if (branding?.data?.logo_url) setLogoUrl(branding.data.logo_url);
+      })
+      .catch(() => {});
+  }, []);
 
   useEffect(() => {
     const handleClickOutside = (e) => {
       if (userMenuRef.current && !userMenuRef.current.contains(e.target)) {
         setUserMenuOpen(false);
+      }
+      if (peopleMenuRef.current && !peopleMenuRef.current.contains(e.target)) {
+        setPeopleMenuOpen(false);
       }
     };
     document.addEventListener("mousedown", handleClickOutside);
@@ -43,6 +65,9 @@ export default function Navbar() {
       <div className="max-w-7xl mx-auto px-4">
         <div className="flex justify-between items-center h-16">
           <Link to="/" className="flex items-center gap-2">
+            {logoUrl && (
+              <img src={logoUrl} alt="The Qaswa Foundation" className="h-10 w-auto object-contain" />
+            )}
             <div>
               <h1 className="font-bold text-xl text-blue-700">
                 The Qaswa Foundation
@@ -54,17 +79,51 @@ export default function Navbar() {
           {/* Desktop links */}
           <div className="hidden md:flex items-center space-x-6 font-medium">
             {links.map((link) => (
-              <Link
-                key={link.to}
-                to={link.to}
-                className={`transition-colors ${
-                  location.pathname === link.to
-                    ? "text-blue-700 font-semibold"
-                    : "text-gray-600 hover:text-blue-600"
-                }`}
-              >
-                {link.label}
-              </Link>
+              <Fragment key={link.to}>
+                {link.to === "/contact" && (
+                  <div className="relative" key="our-people" ref={peopleMenuRef}>
+                    <button
+                      onClick={() => setPeopleMenuOpen(!peopleMenuOpen)}
+                      className={`flex items-center gap-1 transition-colors ${
+                        isPeopleActive
+                          ? "text-blue-700 font-semibold"
+                          : "text-gray-600 hover:text-blue-600"
+                      }`}
+                    >
+                      Our People
+                      <HiChevronDown className={`w-4 h-4 transition-transform ${peopleMenuOpen ? "rotate-180" : ""}`} />
+                    </button>
+                    {peopleMenuOpen && (
+                      <div className="absolute left-0 mt-2 w-56 bg-white rounded-lg shadow-lg border py-1 z-50">
+                        {peopleLinks.map((pl) => (
+                          <Link
+                            key={pl.to}
+                            to={pl.to}
+                            onClick={() => setPeopleMenuOpen(false)}
+                            className={`block px-4 py-2 text-sm ${
+                              location.pathname === pl.to
+                                ? "text-blue-700 font-semibold bg-blue-50"
+                                : "text-gray-700 hover:bg-gray-50"
+                            }`}
+                          >
+                            {pl.label}
+                          </Link>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                )}
+                <Link
+                  to={link.to}
+                  className={`transition-colors ${
+                    location.pathname === link.to
+                      ? "text-blue-700 font-semibold"
+                      : "text-gray-600 hover:text-blue-600"
+                  }`}
+                >
+                  {link.label}
+                </Link>
+              </Fragment>
             ))}
 
             {/* User auth section */}
@@ -140,6 +199,37 @@ export default function Navbar() {
                 {link.label}
               </Link>
             ))}
+            <div>
+              <button
+                onClick={() => setPeopleMobileOpen(!peopleMobileOpen)}
+                className={`w-full flex justify-between items-center px-3 py-2 rounded transition-colors ${
+                  isPeopleActive
+                    ? "bg-blue-50 text-blue-700 font-semibold"
+                    : "text-gray-600 hover:bg-gray-50"
+                }`}
+              >
+                Our People
+                <HiChevronDown className={`w-4 h-4 transition-transform ${peopleMobileOpen ? "rotate-180" : ""}`} />
+              </button>
+              {peopleMobileOpen && (
+                <div className="pl-4 space-y-1">
+                  {peopleLinks.map((pl) => (
+                    <Link
+                      key={pl.to}
+                      to={pl.to}
+                      onClick={() => { setIsOpen(false); setPeopleMobileOpen(false); }}
+                      className={`block px-3 py-2 rounded transition-colors ${
+                        location.pathname === pl.to
+                          ? "bg-blue-50 text-blue-700 font-semibold"
+                          : "text-gray-600 hover:bg-gray-50"
+                      }`}
+                    >
+                      {pl.label}
+                    </Link>
+                  ))}
+                </div>
+              )}
+            </div>
             <div className="border-t pt-2 mt-2">
               {user ? (
                 <>

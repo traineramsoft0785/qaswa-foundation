@@ -11,15 +11,18 @@ import {
   HiOutlineLockClosed,
   HiOutlineAcademicCap,
   HiOutlineUserGroup,
+  HiOutlineDocumentText,
 } from "react-icons/hi";
 
 const navItems = [
   { path: "/admin", label: "Dashboard", icon: HiOutlineHome },
+  { path: "/admin/site-content", label: "Website Content", icon: HiOutlineDocumentText },
   { path: "/admin/programs", label: "Programs", icon: HiOutlineBookOpen },
   { path: "/admin/gallery", label: "Gallery", icon: HiOutlinePhotograph },
   { path: "/admin/notices", label: "Notices", icon: HiOutlineSpeakerphone },
   { path: "/admin/quizzes", label: "Quizzes", icon: HiOutlineAcademicCap },
   { path: "/admin/advisors", label: "Board Advisors", icon: HiOutlineUserGroup },
+  { path: "/admin/trustees", label: "Board Trustees", icon: HiOutlineUserGroup },
   { path: "/admin/donations", label: "Donations", icon: HiOutlineCurrencyRupee },
   { path: "/admin/contacts", label: "Contacts", icon: HiOutlineMail },
   { path: "/admin/change-password", label: "Change Password", icon: HiOutlineLockClosed },
