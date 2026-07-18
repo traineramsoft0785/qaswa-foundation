@@ -239,8 +239,8 @@ def generate_admit_card_pdf(user: dict, quiz: dict, enrollment: dict) -> bytes:
     photo_x = card_x + card_w - photo_w - 30
     photo_y = content_y - photo_h - 5
 
-    # Photo box light background
-    c.setFillColor(colors.HexColor("#f8fafc"))
+    # Photo box white background
+    c.setFillColor(colors.white)
     c.rect(photo_x, photo_y, photo_w, photo_h, fill=1, stroke=0)
 
     # Dashed border
@@ -255,14 +255,13 @@ def generate_admit_card_pdf(user: dict, quiz: dict, enrollment: dict) -> bytes:
     pcy = photo_y + photo_h / 2 + 8
     c.setFillColor(colors.HexColor("#cbd5e1"))
     c.circle(pcx, pcy, 14, fill=1, stroke=0)
-    c.setFillColor(colors.HexColor("#f8fafc"))
+    c.setFillColor(colors.white)
     c.circle(pcx, pcy, 8, fill=1, stroke=0)
 
     # Text below icon
     c.setFillColor(colors.HexColor("#94a3b8"))
     c.setFont("Helvetica", 9)
-    c.drawCentredString(pcx, photo_y + photo_h / 2 - 16, "Paste Passport")
-    c.drawCentredString(pcx, photo_y + photo_h / 2 - 28, "Size Photo Here")
+    c.drawCentredString(pcx, photo_y + photo_h / 2 - 16, "Paste Photo Here")
 
     # --- Student details ---
     detail_x = card_x + 30
@@ -294,6 +293,8 @@ def generate_admit_card_pdf(user: dict, quiz: dict, enrollment: dict) -> bytes:
 
     row_height = 32
     y = detail_start_y
+    # Stop the row backgrounds short of the photo box so they don't paint over it
+    row_width = (photo_x - 10) - (detail_x - 10)
 
     for i, (label, value) in enumerate(rows):
         row_y = y - (i * row_height)
@@ -303,7 +304,7 @@ def generate_admit_card_pdf(user: dict, quiz: dict, enrollment: dict) -> bytes:
             c.setFillColor(colors.HexColor("#f0f4ff"))
         else:
             c.setFillColor(colors.HexColor("#f8fafc"))
-        c.rect(detail_x - 10, row_y - 10, card_w - 60, row_height, fill=1, stroke=0)
+        c.rect(detail_x - 10, row_y - 10, row_width, row_height, fill=1, stroke=0)
 
         # Left accent bar on each row
         c.setFillColor(colors.HexColor("#0f3460"))
