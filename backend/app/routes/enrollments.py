@@ -156,7 +156,7 @@ async def download_admit_card(
 def _get_logo_path():
     import os
     base = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-    path = os.path.join(base, "app", "assets", "logo.png")
+    path = os.path.join(base, "assets", "logo.png")
     return path if os.path.exists(path) else None
 
 
