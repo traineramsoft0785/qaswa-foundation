@@ -2,14 +2,13 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.responses import Response
 from app.database import supabase
 from app.middleware.user_auth import get_current_user
-from datetime import date
 import io
 
 router = APIRouter(prefix="/api/enrollments", tags=["Enrollments"])
 
 
-def generate_roll_number(exam_date: date, quiz_id: str) -> str:
-    prefix = f"QZ-{exam_date.strftime('%Y-%m')}"
+def generate_roll_number(quiz_no: int, quiz_id: str) -> str:
+    prefix = f"QZ{quiz_no}"
     count_result = (
         supabase.table("quiz_enrollments")
         .select("id", count="exact")
@@ -56,8 +55,7 @@ async def enroll_in_quiz(data: dict, current_user: dict = Depends(get_current_us
             detail="Already enrolled in this quiz",
         )
 
-    exam_date = date.fromisoformat(quiz["exam_date"])
-    roll_number = generate_roll_number(exam_date, quiz_id)
+    roll_number = generate_roll_number(quiz["quiz_no"], quiz_id)
 
     max_retries = 3
     for attempt in range(max_retries):
