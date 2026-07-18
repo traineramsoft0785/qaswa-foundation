@@ -194,8 +194,8 @@ def generate_admit_card_pdf(user: dict, quiz: dict, enrollment: dict) -> bytes:
 
     # Logo in banner
     logo_path = _get_logo_path()
-    logo_size = 50
-    logo_x = card_x + 25
+    logo_size = 68
+    logo_x = card_x + 20
     logo_y = banner_y + (banner_h - logo_size) / 2 + 2
 
     if logo_path:
@@ -205,10 +205,10 @@ def generate_admit_card_pdf(user: dict, quiz: dict, enrollment: dict) -> bytes:
         cx = logo_x + logo_size / 2
         cy = logo_y + logo_size / 2
         c.setFillColor(colors.white)
-        c.circle(cx, cy, 22, fill=1, stroke=0)
+        c.circle(cx, cy, 28, fill=1, stroke=0)
         c.setFillColor(colors.HexColor("#0f3460"))
-        c.setFont("Helvetica-Bold", 22)
-        c.drawCentredString(cx, cy - 8, "Q")
+        c.setFont("Helvetica-Bold", 26)
+        c.drawCentredString(cx, cy - 9, "Q")
 
     # Foundation name in banner
     text_x = logo_x + logo_size + 18
