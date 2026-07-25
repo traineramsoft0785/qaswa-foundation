@@ -9,6 +9,7 @@ export default function UserRegister() {
     name: "",
     email: "",
     phone: "",
+    login_mobile: "",
     password: "",
     confirmPassword: "",
     school: "",
@@ -33,12 +34,17 @@ export default function UserRegister() {
       toast.error("Password must be at least 8 characters");
       return;
     }
+    if (!form.email && !form.login_mobile) {
+      toast.error("Provide an email or a mobile number for login");
+      return;
+    }
     setLoading(true);
     try {
       const payload = {
         name: form.name,
-        email: form.email,
-        phone: form.phone,
+        email: form.email || null,
+        phone: form.phone || null,
+        login_mobile: form.login_mobile || null,
         password: form.password,
         school: form.school || null,
         class_name: form.class_name || null,
@@ -88,14 +94,13 @@ export default function UserRegister() {
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Email *
+                  Email
                 </label>
                 <input
                   type="email"
                   name="email"
                   value={form.email}
                   onChange={handleChange}
-                  required
                   className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-500"
                 />
               </div>
@@ -104,29 +109,50 @@ export default function UserRegister() {
             <div className="grid gap-4 sm:grid-cols-2">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Phone *
+                  Mobile Number
+                </label>
+                <input
+                  type="tel"
+                  name="login_mobile"
+                  value={form.login_mobile}
+                  onChange={handleChange}
+                  inputMode="numeric"
+                  pattern="^[6-9]\d{9}$"
+                  title="Enter a valid 10-digit mobile number"
+                  maxLength={10}
+                  placeholder="Used to sign in"
+                  className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-500"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Alternate Number
                 </label>
                 <input
                   type="tel"
                   name="phone"
                   value={form.phone}
                   onChange={handleChange}
-                  required
+                  placeholder="Optional — e.g. a parent's number"
                   className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-500"
                 />
               </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Date of Birth
-                </label>
-                <input
-                  type="date"
-                  name="date_of_birth"
-                  value={form.date_of_birth}
-                  onChange={handleChange}
-                  className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-500"
-                />
-              </div>
+            </div>
+            <p className="text-xs text-gray-500 -mt-2">
+              Provide at least one of Email or Mobile Number.
+            </p>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Date of Birth
+              </label>
+              <input
+                type="date"
+                name="date_of_birth"
+                value={form.date_of_birth}
+                onChange={handleChange}
+                className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-500 max-w-xs"
+              />
             </div>
 
             <div className="grid gap-4 sm:grid-cols-2">

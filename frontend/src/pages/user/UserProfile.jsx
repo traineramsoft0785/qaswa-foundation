@@ -8,6 +8,7 @@ export default function UserProfile() {
   const [form, setForm] = useState({
     name: user?.name || "",
     phone: user?.phone || "",
+    login_mobile: user?.login_mobile || "",
     school: user?.school || "",
     class_name: user?.class_name || "",
     date_of_birth: user?.date_of_birth || "",
@@ -33,6 +34,7 @@ export default function UserProfile() {
     setSaving(true);
     try {
       const payload = { ...form };
+      if (!payload.login_mobile) delete payload.login_mobile;
       if (!payload.school) delete payload.school;
       if (!payload.class_name) delete payload.class_name;
       if (!payload.date_of_birth) delete payload.date_of_birth;
@@ -106,17 +108,38 @@ export default function UserProfile() {
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Phone
+                  Alternate Number
                 </label>
                 <input
                   type="tel"
                   name="phone"
                   value={form.phone}
                   onChange={handleChange}
-                  required
                   className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-500"
                 />
               </div>
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Mobile Number
+              </label>
+              <input
+                type="tel"
+                name="login_mobile"
+                value={form.login_mobile}
+                onChange={handleChange}
+                inputMode="numeric"
+                pattern="^[6-9]\d{9}$"
+                title="Enter a valid 10-digit mobile number"
+                maxLength={10}
+                placeholder="Optional — lets you sign in with this number instead of email"
+                className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-500"
+              />
+              <p className="text-xs text-gray-500 mt-1">
+                Optional. Must be your own number and different from anyone
+                else&apos;s login mobile.
+              </p>
             </div>
 
             <div className="grid gap-4 sm:grid-cols-2">

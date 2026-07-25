@@ -11,6 +11,7 @@ from app.models.user import (
     UserProfileResponse,
     UserProfileUpdate,
     UserChangePasswordRequest,
+    normalize_phone,
 )
 from app.middleware.user_auth import get_current_user
 
@@ -31,23 +32,38 @@ def create_user_token(user: dict) -> str:
 
 @router.post("/register", response_model=UserTokenResponse)
 async def register(data: UserRegisterRequest):
-    existing = (
-        supabase.table("users")
-        .select("id")
-        .eq("email", data.email)
-        .execute()
-    )
-    if existing.data:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail="Email already registered",
+    if data.email:
+        existing = (
+            supabase.table("users")
+            .select("id")
+            .eq("email", data.email)
+            .execute()
         )
+        if existing.data:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="Email already registered",
+            )
+
+    if data.login_mobile:
+        existing_mobile = (
+            supabase.table("users")
+            .select("id")
+            .eq("login_mobile", data.login_mobile)
+            .execute()
+        )
+        if existing_mobile.data:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="Mobile number already in use for login",
+            )
 
     hashed_password = pwd_context.hash(data.password)
     user_data = {
         "name": data.name,
         "email": data.email,
         "phone": data.phone,
+        "login_mobile": data.login_mobile,
         "password_hash": hashed_password,
         "school": data.school,
         "class_name": data.class_name,
@@ -70,6 +86,7 @@ async def register(data: UserRegisterRequest):
             name=user["name"],
             email=user["email"],
             phone=user["phone"],
+            login_mobile=user.get("login_mobile"),
             school=user.get("school"),
             class_name=user.get("class_name"),
             date_of_birth=user.get("date_of_birth"),
@@ -80,12 +97,28 @@ async def register(data: UserRegisterRequest):
 
 @router.post("/login", response_model=UserTokenResponse)
 async def login(data: UserLoginRequest):
-    result = (
-        supabase.table("users")
-        .select("*")
-        .eq("email", data.email)
-        .execute()
-    )
+    identifier = data.identifier.strip()
+    if "@" in identifier:
+        result = (
+            supabase.table("users")
+            .select("*")
+            .eq("email", identifier)
+            .execute()
+        )
+    else:
+        try:
+            phone = normalize_phone(identifier)
+        except ValueError:
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail="Invalid credentials",
+            )
+        result = (
+            supabase.table("users")
+            .select("*")
+            .eq("login_mobile", phone)
+            .execute()
+        )
     if not result.data:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
@@ -112,6 +145,7 @@ async def login(data: UserLoginRequest):
             name=user["name"],
             email=user["email"],
             phone=user["phone"],
+            login_mobile=user.get("login_mobile"),
             school=user.get("school"),
             class_name=user.get("class_name"),
             date_of_birth=user.get("date_of_birth"),
@@ -139,6 +173,7 @@ async def get_me(current_user: dict = Depends(get_current_user)):
         name=user["name"],
         email=user["email"],
         phone=user["phone"],
+        login_mobile=user.get("login_mobile"),
         school=user.get("school"),
         class_name=user.get("class_name"),
         date_of_birth=user.get("date_of_birth"),
@@ -160,6 +195,20 @@ async def update_profile(
     if "date_of_birth" in update_data and update_data["date_of_birth"]:
         update_data["date_of_birth"] = str(update_data["date_of_birth"])
 
+    if update_data.get("login_mobile"):
+        existing_mobile = (
+            supabase.table("users")
+            .select("id")
+            .eq("login_mobile", update_data["login_mobile"])
+            .neq("id", current_user["id"])
+            .execute()
+        )
+        if existing_mobile.data:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="Mobile number already in use for login",
+            )
+
     result = (
         supabase.table("users")
         .update(update_data)
@@ -178,6 +227,7 @@ async def update_profile(
         name=user["name"],
         email=user["email"],
         phone=user["phone"],
+        login_mobile=user.get("login_mobile"),
         school=user.get("school"),
         class_name=user.get("class_name"),
         date_of_birth=user.get("date_of_birth"),

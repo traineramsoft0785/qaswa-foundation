@@ -56,7 +56,9 @@ export default function UserDashboard() {
                 <h1 className="text-xl font-bold text-gray-800">
                   {user?.name}
                 </h1>
-                <p className="text-sm text-gray-500">{user?.email}</p>
+                <p className="text-sm text-gray-500">
+                  {user?.email || user?.login_mobile || user?.phone}
+                </p>
                 {user?.school && (
                   <p className="text-sm text-gray-400">
                     {user.school}

@@ -3,8 +3,8 @@ import userClient from "./userClient";
 export const userRegister = (data) =>
   userClient.post("/api/user/auth/register", data);
 
-export const userLogin = (email, password) =>
-  userClient.post("/api/user/auth/login", { email, password });
+export const userLogin = (identifier, password) =>
+  userClient.post("/api/user/auth/login", { identifier, password });
 
 export const getUserMe = () => userClient.get("/api/user/auth/me");
 
