@@ -1,7 +1,9 @@
 from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi.responses import Response
 from app.database import supabase
 from app.middleware.auth import get_current_admin
 from app.models.quiz import QuizCreate, QuizUpdate
+from app.routes.enrollments import generate_admit_card_pdf
 
 router = APIRouter(prefix="/api/quizzes", tags=["Quizzes"])
 
@@ -146,3 +148,53 @@ async def get_quiz_enrollments(
         })
 
     return enriched
+
+
+@router.get("/{quiz_id}/enrollments/{enrollment_id}/admit-card")
+async def download_enrollment_admit_card(
+    quiz_id: str, enrollment_id: str, admin: dict = Depends(get_current_admin)
+):
+    enrollment_result = (
+        supabase.table("quiz_enrollments")
+        .select("*")
+        .eq("id", enrollment_id)
+        .eq("quiz_id", quiz_id)
+        .execute()
+    )
+    if not enrollment_result.data:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Enrollment not found",
+        )
+    enrollment = enrollment_result.data[0]
+
+    quiz_result = (
+        supabase.table("quizzes")
+        .select("*")
+        .eq("id", quiz_id)
+        .execute()
+    )
+    if not quiz_result.data:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Quiz not found",
+        )
+    quiz = quiz_result.data[0]
+
+    user_result = (
+        supabase.table("users")
+        .select("*")
+        .eq("id", enrollment["user_id"])
+        .execute()
+    )
+    user = user_result.data[0] if user_result.data else {}
+
+    pdf_bytes = generate_admit_card_pdf(user, quiz, enrollment)
+
+    return Response(
+        content=pdf_bytes,
+        media_type="application/pdf",
+        headers={
+            "Content-Disposition": f'attachment; filename="admit-card-{enrollment["roll_number"]}.pdf"'
+        },
+    )

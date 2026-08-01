@@ -10,3 +10,8 @@ export const deleteQuiz = (id) => client.delete(`/api/quizzes/${id}`);
 
 export const getQuizEnrollments = (quizId) =>
   client.get(`/api/quizzes/${quizId}/enrollments`);
+
+export const downloadEnrollmentAdmitCard = (quizId, enrollmentId) =>
+  client.get(`/api/quizzes/${quizId}/enrollments/${enrollmentId}/admit-card`, {
+    responseType: "blob",
+  });
