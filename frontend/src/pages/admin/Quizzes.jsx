@@ -6,6 +6,7 @@ import {
   updateQuiz,
   deleteQuiz,
   getQuizEnrollments,
+  downloadEnrollmentAdmitCard,
 } from "../../api/adminQuizzes";
 import FormModal from "../../components/admin/FormModal";
 import DeleteConfirmDialog from "../../components/admin/DeleteConfirmDialog";
@@ -31,6 +32,7 @@ export default function AdminQuizzes() {
   const [viewingEnrollments, setViewingEnrollments] = useState(null);
   const [enrollments, setEnrollments] = useState([]);
   const [enrollmentsLoading, setEnrollmentsLoading] = useState(false);
+  const [downloadingAdmitCard, setDownloadingAdmitCard] = useState(null);
 
   const load = () => {
     setLoading(true);
@@ -112,6 +114,26 @@ export default function AdminQuizzes() {
       toast.error("Failed to load enrollments");
     } finally {
       setEnrollmentsLoading(false);
+    }
+  };
+
+  const handleDownloadAdmitCard = async (enrollment) => {
+    setDownloadingAdmitCard(enrollment.id);
+    try {
+      const res = await downloadEnrollmentAdmitCard(
+        viewingEnrollments.id,
+        enrollment.id
+      );
+      const url = URL.createObjectURL(new Blob([res.data]));
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = `admit-card-${enrollment.roll_number}.pdf`;
+      link.click();
+      URL.revokeObjectURL(url);
+    } catch {
+      toast.error("Failed to download admit card");
+    } finally {
+      setDownloadingAdmitCard(null);
     }
   };
 
@@ -404,6 +426,9 @@ export default function AdminQuizzes() {
                     <th className="text-left px-3 py-2 font-medium text-gray-500">
                       Class
                     </th>
+                    <th className="text-left px-3 py-2 font-medium text-gray-500">
+                      Admit Card
+                    </th>
                   </tr>
                 </thead>
                 <tbody className="divide-y">
@@ -417,6 +442,17 @@ export default function AdminQuizzes() {
                       <td className="px-3 py-2">{e.user_phone || "—"}</td>
                       <td className="px-3 py-2">{e.user_school || "—"}</td>
                       <td className="px-3 py-2">{e.user_class || "—"}</td>
+                      <td className="px-3 py-2">
+                        <button
+                          onClick={() => handleDownloadAdmitCard(e)}
+                          disabled={downloadingAdmitCard === e.id}
+                          className="text-blue-600 hover:underline disabled:opacity-50"
+                        >
+                          {downloadingAdmitCard === e.id
+                            ? "Downloading..."
+                            : "Download"}
+                        </button>
+                      </td>
                     </tr>
                   ))}
                 </tbody>
