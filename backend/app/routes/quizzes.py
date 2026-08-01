@@ -126,7 +126,7 @@ async def get_quiz_enrollments(
     for enrollment in enrollments.data:
         user_result = (
             supabase.table("users")
-            .select("name, email, phone, school, class_name")
+            .select("name, email, phone, login_mobile, school, class_name")
             .eq("id", enrollment["user_id"])
             .execute()
         )
@@ -135,7 +135,7 @@ async def get_quiz_enrollments(
             **enrollment,
             "user_name": user.get("name"),
             "user_email": user.get("email"),
-            "user_phone": user.get("phone"),
+            "user_phone": user.get("login_mobile") or user.get("phone"),
             "user_school": user.get("school"),
             "user_class": user.get("class_name"),
         })
