@@ -115,6 +115,30 @@ export default function AdminQuizzes() {
     }
   };
 
+  const downloadEnrollmentsCSV = () => {
+    const headers = ["Roll No.", "Name", "Email", "Phone", "School", "Class"];
+    const rows = enrollments.map((e) => [
+      e.roll_number,
+      e.user_name,
+      e.user_email,
+      e.user_phone,
+      e.user_school,
+      e.user_class,
+    ]);
+    const escape = (val) => `"${String(val ?? "").replace(/"/g, '""')}"`;
+    const csv = [headers, ...rows]
+      .map((row) => row.map(escape).join(","))
+      .join("\r\n");
+
+    const blob = new Blob(["﻿" + csv], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = `${viewingEnrollments.title.replace(/[^a-z0-9]+/gi, "_")}_enrollments.csv`;
+    link.click();
+    URL.revokeObjectURL(url);
+  };
+
   const formatDate = (dateStr) =>
     new Date(dateStr).toLocaleDateString("en-IN", {
       day: "numeric",
@@ -347,6 +371,7 @@ export default function AdminQuizzes() {
         <FormModal
           title={`Enrollments — ${viewingEnrollments.title}`}
           onClose={() => setViewingEnrollments(null)}
+          size="4xl"
         >
           {enrollmentsLoading ? (
             <div className="flex justify-center py-8">
@@ -357,7 +382,7 @@ export default function AdminQuizzes() {
               No enrollments yet.
             </p>
           ) : (
-            <div className="max-h-96 overflow-y-auto">
+            <div className="max-h-[65vh] overflow-y-auto">
               <table className="w-full text-sm">
                 <thead className="bg-gray-50 sticky top-0">
                   <tr>
@@ -398,7 +423,15 @@ export default function AdminQuizzes() {
               </table>
             </div>
           )}
-          <div className="flex justify-end pt-4">
+          <div className="flex justify-end gap-2 pt-4">
+            {enrollments.length > 0 && (
+              <button
+                onClick={downloadEnrollmentsCSV}
+                className="px-4 py-2 bg-blue-700 text-white rounded-lg hover:bg-blue-800"
+              >
+                Download CSV
+              </button>
+            )}
             <button
               onClick={() => setViewingEnrollments(null)}
               className="px-4 py-2 border rounded-lg text-gray-600 hover:bg-gray-50"

@@ -118,12 +118,17 @@ async def get_quiz_enrollments(
         supabase.table("quiz_enrollments")
         .select("*")
         .eq("quiz_id", quiz_id)
-        .order("enrolled_at", desc=True)
         .execute()
     )
 
+    def roll_order_key(enrollment: dict) -> int:
+        last_four = (enrollment.get("roll_number") or "")[-4:]
+        return int(last_four) if last_four.isdigit() else 0
+
+    sorted_enrollments = sorted(enrollments.data, key=roll_order_key)
+
     enriched = []
-    for enrollment in enrollments.data:
+    for enrollment in sorted_enrollments:
         user_result = (
             supabase.table("users")
             .select("name, email, phone, login_mobile, school, class_name")
